@@ -46,12 +46,14 @@ app.get('/call/:client_token', function (req, res) {
     {
         nodes[req.params.client_token].call(module, method, null, async, param).done(function(result) {
             res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(JSON.stringify(result));
         });         
     }
     else
     { 
         res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
     }
 })
@@ -67,12 +69,14 @@ app.post('/call/:client_token', function (req, res) {
     {
         nodes[req.params.client_token].call(module, method, module_token, async, params).done(function(result) {
             res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(JSON.stringify(result));            
         });
     }
     else
     { 
         res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
     }
 })
@@ -86,6 +90,7 @@ app.get('/addWebhook/:client_token', function (req, res) {
     {
         nodes[req.params.client_token].addWebhook(key, url).done(function(result) {
             res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(JSON.stringify(result));            
         });
 
@@ -101,6 +106,7 @@ app.get('/addWebhook/:client_token', function (req, res) {
     else
     { 
         res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
     }
 })
@@ -114,6 +120,7 @@ app.get('/dropWebhook/:client_token', function (req, res) {
     {
         nodes[req.params.client_token].dropWebhook(key, url).done(function(result) {
             res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(JSON.stringify(result));            
         });
 
@@ -130,6 +137,7 @@ app.get('/dropWebhook/:client_token', function (req, res) {
     else
     { 
         res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
     }
 })
@@ -139,6 +147,7 @@ app.get('/getWebhookList/:client_token', function (req, res) {
     if (client_token in nodes_save)
     {
         res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify(nodes_save[client_token].webhookurls)); 
     }
 })
@@ -158,6 +167,7 @@ app.get('/registerNode', function (req, res) {
     fs.writeFile(client_const_fname, nodes_save_str);
 
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(node.getLinkInfo()));
 })
 
@@ -166,12 +176,14 @@ app.get('/exit/:client_token', function (req, res) {
     {
         nodes[req.params.client_token].exit().done(function(result) {
             res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(JSON.stringify(result));            
         });
     }
     else
     { 
         res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
     }
 })
