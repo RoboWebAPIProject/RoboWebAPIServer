@@ -151,7 +151,7 @@ app.get('/registerNode', function (req, res) {
     node = constructNode(client_type, client_token);
 
     nodes_save[client_token] = {};
-    nodes_save[client_token].client_type = t;
+    nodes_save[client_token].client_type = client_type;
     nodes_save[client_token].webhookurls = {};
 
     var nodes_save_str = JSON.stringify(nodes_save);
