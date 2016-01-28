@@ -1,28 +1,40 @@
-# RoboWebAPIProject
-
-■ 概要：
-
-Robot のコントロールを Web API を介して行うプロジェクトです
-サーバーとロボットは MQTT などで常時接続し、サーバーにリクエストを送ることで、Web API を介してロボットをコントロールします
-
-例１：
-　http://robowebapiサーバー/call/クライアントトークン?module=ALTextToSpeech&method=say&param=こんにちは
-　
-　識別子 "クライアントトークン" でつながっているロボット(Pepper) に「こんにちは」と喋らせる
-　
-例２：
-　http://robowebapiサーバー/addWebhook/クライアントトークン?key=MiddleTactilTouched&url=http://myserver.com
-　
-　イベント "MiddleTactilTouched" がロボットで発生した時 http://myserver.com が呼ばれるように登録。イベントの内容は POST リクエストの ボディーに JSON 形式で通知されます。
+■ 基本コンセプト：https://github.com/RoboWebAPIProject/RoboWebAPIServer/wiki/%E5%9F%BA%E6%9C%AC%E3%82%B3%E3%83%B3%E3%82%BB%E3%83%97%E3%83%88
 
 
-■ サーバーの起動(node.js)
+■ セットアップ
 
- node roboWebAPI
 
-■ クライアントの起動
+1. ダウンロード
 
-クライアント(ロボット)は現状 Pepper をサポートしています。基本、Pepper の ロボアプリ API、NAOqi の全ての API にアクセスできます。
-Pepper 上ではクライアントアプリ RoboWebAPIClient アプリを起動し、サーバーに接続します。
-　
+git clone https://github.com/RoboWebAPIProject/RoboWebAPIServer.git
+
+2. 依存ファイルのインストール
+
+npm install
+
+3. 設定ファイルの編集
+
+config/default.json を編集
+
+===========================
+{
+ "mqtt_host": "*** MQTT サーバーのホスト名 ***",
+ "mqtt_port" : *** MQTT サーバー接続ポート番号 ***,
+ "mqtt_username" : "MQTT サーバー接続ユーザーID サーバー用",
+ "mqtt_password" : "MQTT サーバー接続パスワード サーバー用",
+ "mqtt_username_for_client" : "MQTT サーバー接続ユーザーID クライアント用",
+ "mqtt_password_for_client" : "MQTT サーバー接続パスワード クライアント用",
+ "request_timeout_ms" : 10000, // リクエストタイムアウト時間
+ "client_token_length" : 8  // クライアントトークンの長さ
+}
+===========================
+
+4. 実行
+
+node roboWebAPI.js 
+
+
+テストサーバー：
+
+http://api.robowebapi.org/test/test.html
 
