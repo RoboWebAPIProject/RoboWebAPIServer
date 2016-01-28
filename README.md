@@ -14,7 +14,7 @@
 
 3. 設定ファイルの編集
 
- config/default.json を編集aaaaa
+ config/default.json を編集
 
 
   {
