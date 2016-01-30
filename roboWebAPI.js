@@ -118,7 +118,7 @@ app.get('/dropWebhook/:client_token', function (req, res) {
 
     if (client_token in nodes)
     {
-        nodes[req.params.client_token].dropWebhook(key, url).done(function(result) {
+        nodes[client_token].dropWebhook(key, url).done(function(result) {
             res.setHeader('Content-Type', 'application/json');
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(JSON.stringify(result));            
@@ -150,6 +150,12 @@ app.get('/getWebhookList/:client_token', function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify(nodes_save[client_token].webhookurls)); 
     }
+    else
+    { 
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
+    }        
 })
 
 app.get('/registerNode', function (req, res) {
@@ -187,6 +193,34 @@ app.get('/exit/:client_token', function (req, res) {
         res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
     }
 })
+
+app.get('/unregisterNode/:client_token', function (req, res) {
+    var client_token = req.params.client_token;
+
+    if (client_token in nodes)
+    {
+        nodes[client_token].unregister().done(function(result) {
+
+        });
+
+        delete nodes[client_token];
+        delete nodes_save[client_token];
+
+        var nodes_save_str = JSON.stringify(nodes_save);
+        fs.writeFile(client_const_fname, nodes_save_str);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.end(JSON.stringify({"result":null, "timeout": false}));            
+    }
+    else
+    { 
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
+    }
+})
+
 
 function constructNode(client_type, client_token)
 {

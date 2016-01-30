@@ -169,6 +169,23 @@ PepperPlugin.prototype.dropWebhook = function(key, url) {
     return delayedResponse;
 };
 
+PepperPlugin.prototype.unregister = function() {
+    console.log("unregister:" + this.client_token + " unregister command called.");
+
+    delayedResponse = new PepperDelayResponse();
+    delayedResponses.push(delayedResponse);
+
+    var command = 
+    {
+        'command' : 'unregister',
+        'method_token' : delayedResponse.token()
+    };
+
+    this.client.publish(this.command_token, JSON.stringify(command));
+
+    return delayedResponse;
+};
+
 PepperPlugin.prototype.exit = function(key, url) {
     console.log("client:" + this.client_token + " exit command called.");
 
@@ -188,7 +205,8 @@ PepperPlugin.prototype.exit = function(key, url) {
 
 
 PepperPlugin.prototype.getLinkInfo = function() {
-    return {"client_token": this.client_token, 
+    return {
+            "client_token": this.client_token, 
             "command_token": this.command_token, 
             "return_token" : this.return_token,
             "event_token": this.event_token, 
