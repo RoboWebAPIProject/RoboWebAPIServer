@@ -98,7 +98,10 @@ app.get('/addWebhook/:client_token', function (req, res) {
         {
             nodes_save[client_token].webhookurls[key] = [];
         }
-        nodes_save[client_token].webhookurls[key].push(url);
+        if (nodes_save[client_token].webhookurls[key].indexOf(url) == -1)
+        {
+            nodes_save[client_token].webhookurls[key].push(url);
+        }
 
         var nodes_save_str = JSON.stringify(nodes_save);
         fs.writeFile(client_const_fname, nodes_save_str);
