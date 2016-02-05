@@ -1,8 +1,9 @@
-■ 基本コンセプト：https://github.com/RoboWebAPIProject/RoboWebAPIServer/wiki/%E5%9F%BA%E6%9C%AC%E3%82%B3%E3%83%B3%E3%82%BB%E3%83%97%E3%83%88
+# 基本コンセプト
+
+https://github.com/RoboWebAPIProject/RoboWebAPIServer/wiki/%E5%9F%BA%E6%9C%AC%E3%82%B3%E3%83%B3%E3%82%BB%E3%83%97%E3%83%88
 
 
-■ セットアップ
-
+# セットアップ
 
 1. ダウンロード
 
@@ -41,7 +42,11 @@
  node roboWebAPI.js 
 
 
-■ テストサーバー：
+# テストサーバー
 
- http://api.robowebapi.org/test/test.html
+http://api.robowebapi.org:8081
+
+#テストページ
+
+http://api.robowebapi.org/test/test.html
 
