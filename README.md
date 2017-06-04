@@ -6,8 +6,10 @@ https://github.com/RoboWebAPIProject/RoboWebAPIServer/wiki/%E5%9F%BA%E6%9C%AC%E3
 # セットアップ
 
 0. MQTTブローカーをセットアップ
+
   このサービスはクライアントとの通信のために MQTT を使います。MQTT ブローカーはこのサービスの中には含まれていません。別途セットアップが必要です。
   Mosquitto を使って動作を確認しています。
+
 
 1. ダウンロード
 
