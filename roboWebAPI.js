@@ -48,13 +48,13 @@ app.get('/call/:client_token', function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(JSON.stringify(result));
-        });         
+        });
     }
     else
-    { 
+    {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));
     }
 })
 
@@ -70,14 +70,14 @@ app.post('/call/:client_token', function (req, res) {
         nodes[req.params.client_token].call(module, method, module_token, async, params).done(function(result) {
             res.setHeader('Content-Type', 'application/json');
             res.setHeader('Access-Control-Allow-Origin', '*');
-            res.end(JSON.stringify(result));            
+            res.end(JSON.stringify(result));
         });
     }
     else
-    { 
+    {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));
     }
 })
 
@@ -91,7 +91,7 @@ app.get('/addWebhook/:client_token', function (req, res) {
         nodes[req.params.client_token].addWebhook(key, url).done(function(result) {
             res.setHeader('Content-Type', 'application/json');
             res.setHeader('Access-Control-Allow-Origin', '*');
-            res.end(JSON.stringify(result));            
+            res.end(JSON.stringify(result));
         });
 
         if ((client_token in nodes_save) && !(key in nodes_save[client_token].webhookurls))
@@ -107,10 +107,10 @@ app.get('/addWebhook/:client_token', function (req, res) {
         fs.writeFile(client_const_fname, nodes_save_str);
     }
     else
-    { 
+    {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));
     }
 })
 
@@ -124,24 +124,24 @@ app.get('/dropWebhook/:client_token', function (req, res) {
         nodes[client_token].dropWebhook(key, url).done(function(result) {
             res.setHeader('Content-Type', 'application/json');
             res.setHeader('Access-Control-Allow-Origin', '*');
-            res.end(JSON.stringify(result));            
+            res.end(JSON.stringify(result));
         });
 
         if (client_token in nodes_save && key in nodes_save[client_token].webhookurls)
         {
             while(nodes_save[client_token].webhookurls[key].indexOf(url) >= 0)
             {
-                nodes_save[client_token].webhookurls[key].splice(nodes_save[client_token].webhookurls[key].indexOf(url),1);    
+                nodes_save[client_token].webhookurls[key].splice(nodes_save[client_token].webhookurls[key].indexOf(url),1);
             }
             var nodes_save_str = JSON.stringify(nodes_save);
             fs.writeFile(client_const_fname, nodes_save_str);
         }
     }
     else
-    { 
+    {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));
     }
 })
 
@@ -151,18 +151,37 @@ app.get('/getWebhookList/:client_token', function (req, res) {
     {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify(nodes_save[client_token].webhookurls)); 
+        res.end(JSON.stringify(nodes_save[client_token].webhookurls));
     }
     else
-    { 
+    {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
-    }        
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));
+    }
 })
 
 app.get('/registerNode', function (req, res) {
     var client_token = randtoken.generate(client_token_length);
+    var client_type = req.query.type;
+    var node = null;
+
+    node = constructNode(client_type, client_token);
+
+    nodes_save[client_token] = {};
+    nodes_save[client_token].client_type = client_type;
+    nodes_save[client_token].webhookurls = {};
+
+    var nodes_save_str = JSON.stringify(nodes_save);
+    fs.writeFile(client_const_fname, nodes_save_str);
+
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.end(JSON.stringify(node.getLinkInfo()));
+})
+
+app.get('/registerNode2', function (req, res) {
+    var client_token = req.query.token;
     var client_type = req.query.type;
     var node = null;
 
@@ -186,14 +205,14 @@ app.get('/exit/:client_token', function (req, res) {
         nodes[req.params.client_token].exit().done(function(result) {
             res.setHeader('Content-Type', 'application/json');
             res.setHeader('Access-Control-Allow-Origin', '*');
-            res.end(JSON.stringify(result));            
+            res.end(JSON.stringify(result));
         });
     }
     else
-    { 
+    {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));
     }
 })
 
@@ -214,26 +233,26 @@ app.get('/unregisterNode/:client_token', function (req, res) {
 
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify({"result":null, "timeout": false}));            
+        res.end(JSON.stringify({"result":null, "timeout": false}));
     }
     else
-    { 
+    {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));                 
+        res.end(JSON.stringify({"result":null, "timeout": false, "exception":"Invalid client_token"}));
     }
 })
 
 
 function constructNode(client_type, client_token)
 {
-    if (client_type == 'pepper')
+    if (client_type == 'pepper' || client_type == 'nao')
         node = new pepperPlugin(client_token);
-    else 
+    else
     {
         console.log("Only pepper for type is supported now!")
     }
-    
+
     if (node == null)
     {
         res.end("Only pepper for type is supported now!");
@@ -253,4 +272,3 @@ var server = app.listen(8081, function () {
   console.log("RoboWebAPI app listening at http://%s:%s", host, port)
 
 })
-
