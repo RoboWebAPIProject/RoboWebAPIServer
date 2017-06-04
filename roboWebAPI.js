@@ -246,20 +246,26 @@ app.get('/unregisterNode/:client_token', function (req, res) {
 
 function constructNode(client_type, client_token)
 {
-    if (client_type == 'pepper' || client_type == 'nao')
-        node = new pepperPlugin(client_token);
-    else
-    {
-        console.log("Only pepper for type is supported now!")
-    }
+    var node = null;
 
-    if (node == null)
-    {
-        res.end("Only pepper for type is supported now!");
-        return;
-    }
+    if (client_token in nodes) {
+        node = nodes[client_token];
+    } else {
+      
+        if (client_type == 'pepper' || client_type == 'nao')
+            node = new pepperPlugin(client_token);
+        else
+        {
+            console.log("Only pepper for type is supported now!");
+        }
 
-    nodes[client_token] = node;
+        if (node == null)
+        {
+            res.end("Only pepper for type is supported now!");
+            return;
+        }
+        nodes[client_token] = node;
+    }
 
     return node;
 }
