@@ -36,12 +36,17 @@ var client_token_length = config.client_token_length
 var app = express();
 app.use(bodyParser())
 
-app.get('/check/:client_token', function (req, res) {
-    if (req.params.client_token in nodes)
+app.get('/check/:access_token', function (req, res) {
+    // TODO :
+    // currently, access token is the same with client token.
+    // Should be maintained separately.
+    if (req.params.access_token in nodes)
     {
+      var client_token = req.params.client_token;
+
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Access-Control-Allow-Origin', '*');
-      res.end(JSON.stringify({"result":true}));
+      res.end(JSON.stringify({"result":true, "client_token":client_token}));
     }
     else
     {
