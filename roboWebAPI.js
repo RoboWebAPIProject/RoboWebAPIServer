@@ -36,6 +36,21 @@ var client_token_length = config.client_token_length
 var app = express();
 app.use(bodyParser())
 
+app.get('/check/:client_token', function (req, res) {
+    if (req.params.client_token in nodes)
+    {
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.end(JSON.stringify({"result":true}));
+    }
+    else
+    {
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.end(JSON.stringify({"result":false}));
+    }
+})
+
 app.get('/call/:client_token', function (req, res) {
     var module = req.query.module;
     var method = req.query.method;
@@ -251,7 +266,7 @@ function constructNode(client_type, client_token)
     if (client_token in nodes) {
         node = nodes[client_token];
     } else {
-      
+
         if (client_type == 'pepper' || client_type == 'nao')
             node = new pepperPlugin(client_token);
         else
